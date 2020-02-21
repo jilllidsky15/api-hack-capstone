@@ -1,35 +1,41 @@
 'use strict';
 
-const locationKey = 'c4314e461218a7';
-const locationURL = 'https://us1.locationiq.com/v1/search.php';
+const locationKey = '05f174bb5a634cfeb6111ff86e830812';
+const locationURL = 'https://api.opencagedata.com/geocode/v1/json';
 
 const hikingKey = '200683797-e94ac7495e9e689dc27179e7604e5453';
 const hikingURL = 'https://www.hikingproject.com/data/get-trails';
 
-function displayResults(responseJson){
+function displayResults(responseJson) {
   $(".results-list").empty();
-  for (let i = 0;  i < responseJson.trails.length; i++) {
+  for (let i = 0; i < responseJson.trails.length; i++) {
     $('.results-list').append(`
-    <li>
-      <h3><a href="${responseJson.trails[i].url}">${responseJson.trails[i].name}</a></h3>
-      <p>${responseJson.trails[i].location}</p>
-      <p>${responseJson.trails[i].length} miles</p>
+    <li class="item-container">
+      <img src="${responseJson.trails[i].imgSmallMed}">
+      <div class="description-container">
+        <h3><a href="${responseJson.trails[i].url}">${responseJson.trails[i].name}</a></h3>
+        <p>${responseJson.trails[i].location}</p>
+        <p>Length: ${responseJson.trails[i].length} miles</p>
+        <p>Rating: ${responseJson.trails[i].stars}/5</p>
+      </div>
     </li>
-    `)};
-  $('.results').removeClass('hidden'); 
+    `)
+  };
+  $('.results').removeClass('hidden');
 }
 
-function createHikingURL(lat, lon) {
-  return `${hikingURL}?lat=${lat}&lon=${lon}&key=${hikingKey}`;
+function createHikingURL(lat, lng) {
+  return `${hikingURL}?lat=${lat}&lon=${lng}&key=${hikingKey}`;
 }
 
-// Pull lat and lon coordinates from json object
+// Pull lat and lng coordinates from json object
 function useCoordinates(responseJson) {
   // console.log(responseJson);
-  if (responseJson.length > 0) {
-    const lat = responseJson[0].lat;
-    const lon = responseJson[0].lon;
-    const fullHikingURL = createHikingURL(lat, lon);
+  if (responseJson.results.length > 0) {
+    const lat = responseJson.results[0].geometry.lat;
+    const lng = responseJson.results[0].geometry.lng;
+    const fullHikingURL = createHikingURL(lat, lng);
+    // console.log(fullHikingURL);
 
     fetch(fullHikingURL)
       .then(response => {
@@ -45,16 +51,14 @@ function useCoordinates(responseJson) {
   }
 }
 
-function getCoordinates(queryCity, queryState, queryPostalcode) {
+function getCoordinates(queryPostalcode) {
   const locationParams = {
     key: locationKey,
-    format: 'json',
-    city: queryCity,
-    state: queryState,
-    postalcode: queryPostalcode,
-    country: "us",
+    q: queryPostalcode,
+    countrycode: "us",
+    limit: 1,
   }
-  // console.log(params);
+  // console.log(locationParams);
 
   const locationString = formatLocationParams(locationParams);
   const fullLocationURL = locationURL + '?' + locationString;
@@ -86,11 +90,9 @@ function watchForm() {
     event.preventDefault();
     $('.js-error-message').addClass('hidden');
     // What did the user input? Get the value of their input
-    const inputCity = $('.city').val()
-    const inputState = $('.state').val();
     const inputPostalcode = $('.postalcode').val();
-    // console.log(inputCity, inputState, inputPostalcode);
-    getCoordinates(inputCity, inputState, inputPostalcode);
+    // console.log(inputPostalcode);
+    getCoordinates(inputPostalcode);
   });
 }
 
