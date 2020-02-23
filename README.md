@@ -17,9 +17,9 @@ Click on the "Find Trails!" button to see results
 ![](images/results-screen.png)
 
 ## Key Technologies Used
--HTML
--CSS
--JavaScript
--jQuery
--LocationIQ API
--Hiking Project API
+- HTML
+- CSS
+- JavaScript
+- jQuery
+- LocationIQ API
+- Hiking Project API
