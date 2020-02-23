@@ -8,13 +8,13 @@ Summit Up: A Hiking Trail Guide offers a quick and easy way to find trails aroun
 ## User Guide
 
 Landing page
-![](images/empty-form-screen)
+![](images/empty-form-screen.png)
 
 Input your zip code
-![](images/input-screen)
+![](images/input-screen.png)
 
 Click on the "Find Trails!" button to see results
-![](images/results-screen)
+![](images/results-screen.png)
 
 ## Key Technologies Used
 -HTML
