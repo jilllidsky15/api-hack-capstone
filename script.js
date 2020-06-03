@@ -100,6 +100,6 @@ function watchForm() {
 
 // When the page loads run these functions
 $(function () {
-  console.log('App loaded');
+  // console.log('App loaded');
   watchForm();
 });
