@@ -5,6 +5,10 @@
   box-sizing: border-box;
 }
 
+*:focus {
+  outline: 0px;
+}
+
 body {
   font-family: 'Archivo Narrow', sans-serif;
   letter-spacing: .03em;
